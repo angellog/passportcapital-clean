@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://passportcapital.lovable.app';
+export const BASE_URL = 'https://passportcapital.com';
 export const WHATSAPP_LINK = 'https://wa.me/244787676544';
 export const TELEGRAM_LINK = 'https://t.me/passportcapital';
 export const CONTACT_EMAIL = 'info@passportcapital.com';

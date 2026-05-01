@@ -1,4 +1,4 @@
-import { Shield, Award, Users, Globe } from 'lucide-react';
+import { Shield, Award, Globe } from 'lucide-react';
 import { Marquee } from '@/components/ui/marquee';
 import navyLeatherTexture from '@/assets/navy-leather-texture.png';
 
@@ -72,7 +72,7 @@ const mediaLogos = [
 
 const trustStats = [
   { icon: Shield, value: '99%', label: 'Success Rate' },
-  { icon: Users, value: '250+', label: 'Families Served' },
+  { icon: Globe, value: '27+', label: 'Programs' },
   { icon: Globe, value: '15+', label: 'Countries' },
   { icon: Award, value: '12', label: 'Years Experience' },
 ];

@@ -73,12 +73,12 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 animate-ken-burns"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-sapphire-deep via-royal/95 to-royal-dark/90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-sapphire-deep via-royal/95 to-royal-dark/90 animate-gradient-shift" />
         <div className="absolute inset-0 bg-gradient-to-t from-sapphire-deep/80 via-sapphire-deep/20 to-transparent" />
         <div
           className="absolute inset-0 opacity-[0.02]"
@@ -112,31 +112,28 @@ const Hero = () => {
             >
               <span className="w-2 h-2 bg-gold rounded-full animate-pulse" />
               <span className="text-white/90 text-sm font-medium tracking-wide">
-                Trusted by 5,000+ High-Net-Worth Families
+                Access to 27+ Government-Approved Programs
               </span>
             </div>
 
             <h1
               className={`font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] mb-6 transition-all duration-700 delay-100 hero-text-shadow ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
-              Create Your{' '}
+              Your Second Passport.{' '}
               <span className="relative inline-block">
                 <span className="text-gradient-gold bg-gradient-to-r from-gold via-champagne to-gold bg-clip-text text-transparent drop-shadow-lg">
-                  Plan B
+                  Handled.
                 </span>
                 <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
                   <path d="M2 8C50 2 150 2 198 8" stroke="hsl(var(--gold))" strokeWidth="3" strokeLinecap="round" className="opacity-70" />
                 </svg>
               </span>
-              <br />
-              <span className="text-white">For Global Freedom</span>
             </h1>
 
             <p
               className={`text-lg md:text-xl text-white/95 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed transition-all duration-700 delay-200 hero-text-shadow-soft ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
-              Secure second citizenship or residency for you and your family.
-              Unlock visa-free travel to 140+ countries, tax optimization, and generational wealth protection.
+              Expert citizenship and residency advisory for global investors. Same programs. Sharper guidance.
             </p>
 
             <div
@@ -188,32 +185,26 @@ const Hero = () => {
             </div>
           </div>
 
-          <div ref={statsRef} className="lg:col-span-5 hidden lg:block">
-            <div className="relative">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className={`absolute bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-6 shadow-elegant transition-all duration-700 hover:bg-white/20 hover:scale-105 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
-                  style={{
-                    right: index === 0 ? '0' : index === 1 ? '40px' : '20px',
-                    top: index === 0 ? '0' : index === 1 ? '120px' : '250px',
-                    transitionDelay: `${500 + index * 150}ms`,
-                  }}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-gold">
-                      <stat.icon className="w-7 h-7 text-accent-foreground" />
+          <div ref={statsRef} className="lg:col-span-5 hidden lg:flex lg:flex-col lg:items-end lg:gap-4">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className={`w-64 bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-6 shadow-elegant transition-all duration-700 hover:bg-white/20 hover:scale-105 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
+                style={{ transitionDelay: `${500 + index * 150}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-gold">
+                    <stat.icon className="w-7 h-7 text-accent-foreground" />
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-white hero-text-shadow">
+                      <CountUpNumber end={stat.value} shouldStart={statsInView} />{stat.suffix}
                     </div>
-                    <div>
-                      <div className="text-3xl font-bold text-white hero-text-shadow">
-                        <CountUpNumber end={stat.value} shouldStart={statsInView} />{stat.suffix}
-                      </div>
-                      <div className="text-white/90 text-sm font-medium">{stat.label}</div>
-                    </div>
+                    <div className="text-white/90 text-sm font-medium">{stat.label}</div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 

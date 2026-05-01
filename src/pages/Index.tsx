@@ -3,10 +3,11 @@ import Hero from '@/components/home/Hero';
 import MediaTrustBar from '@/components/home/MediaTrustBar';
 import FeaturedPrograms from '@/components/home/FeaturedPrograms';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
+import ClientProfiles from '@/components/home/ClientProfiles';
 import HowItWorks from '@/components/home/HowItWorks';
 import Testimonials from '@/components/home/Testimonials';
-import CryptoBadges from '@/components/home/CryptoBadges';
-import ContactForm from '@/components/contact/ContactForm';
+import PartnerBar from '@/components/home/PartnerBar';
+import LeadQualifier from '@/components/home/LeadQualifier';
 import SEOHead from '@/components/seo/SEOHead';
 import { OrganizationJsonLd } from '@/components/seo/JsonLd';
 
@@ -15,7 +16,7 @@ const Index = () => {
     <Layout>
       <SEOHead
         title="Passport Capital | Citizenship & Residency by Investment"
-        description="Secure a second passport or golden visa through government-approved investment programs in 20+ countries. Expert guidance from consultation to approval."
+        description="Expert citizenship and residency advisory for global investors. Access 27+ government-approved programs across 20+ countries. Same programs. Sharper guidance."
         path="/"
       />
       <OrganizationJsonLd />
@@ -23,10 +24,11 @@ const Index = () => {
       <MediaTrustBar />
       <FeaturedPrograms />
       <WhyChooseUs />
+      <ClientProfiles />
       <HowItWorks />
       <Testimonials />
-      <CryptoBadges />
-      <ContactForm />
+      <PartnerBar />
+      <LeadQualifier />
     </Layout>
   );
 };

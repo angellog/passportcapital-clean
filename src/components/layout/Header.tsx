@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe, Phone, ChevronDown, ArrowRight } from 'lucide-react';
+import { Menu, X, Globe, ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePrograms } from '@/hooks/usePrograms';
 import { WhatsAppIcon } from '@/components/shared/WhatsAppIcon';
@@ -11,7 +11,7 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Programs', href: '/programs', hasMegaMenu: true },
   { name: 'Compare', href: '/compare' },
-  { name: 'How It Works', href: '/how-it-works' },
+  { name: 'Who We Serve', href: '/who-we-serve' },
   { name: 'Services', href: '/services' },
   { name: 'About', href: '/about' },
 ];
@@ -209,25 +209,26 @@ const Header = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="tel:+244787676544"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                scrolled || !isHomePage
-                  ? 'text-muted-foreground hover:text-foreground'
-                  : 'text-white hover:text-white/90'
-              }`}
-              style={!scrolled && isHomePage ? { textShadow: '0 1px 3px rgba(0,0,0,0.4)' } : undefined}
-            >
-              <Phone className="w-4 h-4" />
-              <span className="hidden xl:inline">+244 787 676 544</span>
-            </a>
-
             <Button
               asChild
-              className={`rounded-xl shadow-royal transition-all duration-300 hover:-translate-y-0.5 ${
+              className={`rounded-xl transition-all duration-300 hover:-translate-y-0.5 ${
                 scrolled || !isHomePage
-                  ? 'gradient-royal text-primary-foreground'
+                  ? 'gradient-gold text-accent-foreground'
                   : 'bg-white text-royal hover:bg-white/95'
+              }`}
+            >
+              <Link to="/#lead-qualifier" className="flex items-center gap-2">
+                Get Started
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className={`rounded-xl ${
+                scrolled || !isHomePage
+                  ? 'border-royal/20 text-foreground hover:bg-royal/5'
+                  : 'border-white/30 text-white hover:bg-white/10 bg-white/5'
               }`}
             >
               <a
@@ -237,22 +238,9 @@ const Header = () => {
                 className="flex items-center gap-2"
               >
                 <WhatsAppIcon className="w-4 h-4" />
-                WhatsApp Us
+                WhatsApp
               </a>
             </Button>
-            <a
-              href={TELEGRAM_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                scrolled || !isHomePage
-                  ? 'text-muted-foreground hover:text-foreground'
-                  : 'text-white hover:text-white/90'
-              }`}
-            >
-              <TelegramIcon className="w-4 h-4" />
-              Telegram
-            </a>
           </div>
 
           <button
@@ -289,17 +277,20 @@ const Header = () => {
             </div>
 
             <div className="flex flex-col gap-3 pt-4 border-t border-border">
-              <a
-                href="tel:+244787676544"
-                className="flex items-center gap-3 px-4 py-3 text-muted-foreground"
+              <Button
+                asChild
+                className="mx-4 gradient-gold text-accent-foreground rounded-xl"
               >
-                <Phone className="w-5 h-5" />
-                <span>+244 787 676 544</span>
-              </a>
+                <Link to="/#lead-qualifier" onClick={() => setMobileMenuOpen(false)}>
+                  Get Started
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
               <div className="flex gap-3 mx-4">
                 <Button
                   asChild
-                  className="flex-1 gradient-royal text-primary-foreground rounded-xl"
+                  variant="outline"
+                  className="flex-1 rounded-xl"
                 >
                   <a
                     href={WHATSAPP_LINK}

@@ -2,89 +2,56 @@ import Layout from '@/components/layout/Layout';
 import SEOHead from '@/components/seo/SEOHead';
 import {
   Globe,
-  FileText,
-  Users,
-  Building,
-  Briefcase,
   Shield,
+  Users,
   Wallet,
-  Plane,
+  FileText,
   ArrowRight,
   CheckCircle,
-  Clock,
-  Headphones
+  Headphones,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { WHATSAPP_LINK, TELEGRAM_LINK } from '@/lib/constants';
-import { TelegramIcon } from '@/components/shared/TelegramIcon';
+import {
+  WHATSAPP_LINK,
+  TELEGRAM_LINK,
+  CONSULTATION_FEE,
+  COMMITMENT_FEE_RATE,
+  formatCurrency,
+} from '@/lib/constants';
+import { TelegramIcon, WhatsAppIcon } from '@/components/shared';
+import CryptoBadges from '@/components/home/CryptoBadges';
 
 const services = [
   {
+    icon: Shield,
+    title: 'Citizenship Advisory',
+    outcome:
+      'A second passport that opens 140+ countries visa-free — with expert guidance on the right program for your situation',
+    programs: 'Caribbean, Malta, Turkey, Vanuatu',
+  },
+  {
     icon: Globe,
-    title: 'Citizenship by Investment',
-    description: 'Obtain a second passport through government-approved investment programs in 20+ countries.',
-    features: [
-      'Caribbean programs (St. Kitts, Dominica, Grenada, etc.)',
-      'European pathways (Malta, Portugal, Greece)',
-      'Pacific options (Vanuatu, Fiji)',
-      'Middle East programs (UAE, Jordan, Turkey)',
-    ],
-  },
-  {
-    icon: Building,
-    title: 'Residency by Investment',
-    description: 'Secure permanent residency rights through real estate or business investments.',
-    features: [
-      'Golden Visa programs',
-      'Investor visa pathways',
-      'Retirement residency',
-      'Digital nomad visas',
-    ],
-  },
-  {
-    icon: FileText,
-    title: 'Document Preparation',
-    description: 'Complete assistance with gathering, certifying, and translating all required documents.',
-    features: [
-      'Document checklist creation',
-      'Apostille and legalization',
-      'Certified translations',
-      'Background check coordination',
-    ],
-  },
-  {
-    icon: Wallet,
-    title: 'Crypto Payment Solutions',
-    description: 'Seamlessly use cryptocurrency for your investment in crypto-friendly programs.',
-    features: [
-      'Bitcoin & Ethereum accepted',
-      'Stablecoin transactions',
-      'Secure payment processing',
-      'Crypto-native programs',
-    ],
+    title: 'Residency Advisory',
+    outcome:
+      'EU residency with a clear path to citizenship — no need to relocate full-time',
+    programs: 'Portugal, Greece, Spain, Hungary',
   },
   {
     icon: Users,
-    title: 'Family Applications',
-    description: 'Include your entire family in one application with special dependent provisions.',
-    features: [
-      'Spouse inclusion',
-      'Dependent children',
-      'Parents & grandparents',
-      'Sibling options available',
-    ],
+    title: 'Family & Legacy Planning',
+    outcome:
+      'Citizenship and residency structured for your entire family — children, parents, and future generations',
+    programs: 'Caribbean family packages, Malta, Portugal',
   },
   {
-    icon: Briefcase,
-    title: 'Corporate Relocation',
-    description: 'Comprehensive solutions for business owners and executives seeking global mobility.',
-    features: [
-      'Corporate tax planning',
-      'Business establishment',
-      'Employee relocation',
-      'Banking introductions',
-    ],
+    icon: Wallet,
+    title: 'Crypto-Friendly Programs',
+    outcome:
+      'Pay for your citizenship or residency program using Bitcoin, Ethereum, USDT, or Solana',
+    programs: 'Dominica, Vanuatu, El Salvador, Nauru',
   },
 ];
 
@@ -111,6 +78,8 @@ const processSteps = [
   },
 ];
 
+const commitmentRateDisplay = `${(COMMITMENT_FEE_RATE * 100).toFixed(1)}%`;
+
 const Services = () => {
   return (
     <Layout>
@@ -119,40 +88,58 @@ const Services = () => {
         description="Full-service citizenship and residency by investment advisory. Crypto-friendly payments, family applications, tax planning, and relocation support."
         path="/services"
       />
+
       <section className="pt-32 pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="container-wide text-center">
-          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
-            Comprehensive Solutions
-          </span>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Our Services
+            Citizenship & Residency Advisory, Done Right
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            End-to-end support for your global citizenship and residency journey. From consultation to passport collection.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            We don't just process applications. We advise. From first
+            consultation to passport in hand — with transparent fees and a
+            dedicated advisor at every step.
           </p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Clock className="w-5 h-5 text-primary" />
-              <span>10+ Years Experience</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Globe className="w-5 h-5 text-primary" />
-              <span>20+ Countries</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Users className="w-5 h-5 text-primary" />
-              <span>5000+ Families Served</span>
-            </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-muted/30">
+        <div className="container-wide">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Transparent Fees. No Hidden Markup.
+            </h2>
           </div>
+
+          <Card className="max-w-2xl mx-auto border-2 border-primary/20">
+            <CardContent className="p-8 text-center space-y-4">
+              <p className="font-display text-2xl md:text-3xl font-bold text-foreground">
+                Advisory fee:{' '}
+                {formatCurrency(CONSULTATION_FEE)} consultation +{' '}
+                {commitmentRateDisplay} of program investment
+              </p>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                You pay the same government fees as anyone else. Our advisory fee
+                is separate, transparent, and stated upfront.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 pt-2">
+                <Badge variant="secondary" className="text-sm px-4 py-1.5">
+                  No hidden costs
+                </Badge>
+                <Badge variant="secondary" className="text-sm px-4 py-1.5">
+                  No factory-line processing
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
       <section className="py-20 bg-background">
         <div className="container-wide">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
+          <div className="grid md:grid-cols-2 gap-8">
+            {services.map((service) => (
               <div
-                key={index}
+                key={service.title}
                 className="bg-card border border-border rounded-2xl p-8 hover:shadow-xl transition-all hover:-translate-y-1"
               >
                 <div className="w-14 h-14 rounded-xl gradient-royal flex items-center justify-center mb-6">
@@ -161,15 +148,12 @@ const Services = () => {
                 <h3 className="font-display text-xl font-bold text-foreground mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground mb-6">{service.description}</p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-foreground mb-4 leading-relaxed">
+                  {service.outcome}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Programs: {service.programs}
+                </p>
               </div>
             ))}
           </div>
@@ -183,7 +167,8 @@ const Services = () => {
               Simple 4-Step Process
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We've streamlined the journey to make obtaining your second citizenship as smooth as possible.
+              We've streamlined the journey to make obtaining your second
+              citizenship as smooth as possible.
             </p>
           </div>
 
@@ -196,8 +181,12 @@ const Services = () => {
                 <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold">
                   {index + 1}
                 </span>
-                <h3 className="font-display text-lg font-bold text-foreground mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">{step.description}</p>
+                <h3 className="font-display text-lg font-bold text-foreground mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  {step.description}
+                </p>
                 {index < processSteps.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-border" />
                 )}
@@ -207,94 +196,61 @@ const Services = () => {
         </div>
       </section>
 
+      <CryptoBadges />
+
       <section className="py-20 bg-background">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
-                Why Passport Capital
-              </span>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Your Trusted Partner in Global Mobility
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                We're not just consultants – we're your strategic partners in building a secure, borderless future for you and your family.
-              </p>
-
-              <div className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Government Authorized</h4>
-                    <p className="text-muted-foreground text-sm">Licensed agents for all programs we represent. Full legal compliance guaranteed.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Wallet className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Crypto-First Approach</h4>
-                    <p className="text-muted-foreground text-sm">Specialists in cryptocurrency payments. We speak your language.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Plane className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">End-to-End Support</h4>
-                    <p className="text-muted-foreground text-sm">From first consultation to passport collection, we handle everything.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl p-8 lg:p-12">
-              <h3 className="font-display text-2xl font-bold text-foreground mb-6">
-                Ready to Get Started?
-              </h3>
-              <p className="text-muted-foreground mb-8">
-                Book a free, no-obligation consultation to discuss your goals and explore your options.
-              </p>
-              <div className="space-y-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="w-full gradient-royal text-primary-foreground shadow-royal"
+          <div className="max-w-xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Ready to Get Started?
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Book a consultation and get expert guidance on the right program for
+              you.
+            </p>
+            <div className="space-y-4">
+              <Button
+                asChild
+                size="lg"
+                className="w-full gradient-royal text-primary-foreground shadow-royal"
+              >
+                <Link to="/#lead-qualifier">
+                  Get Started
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full"
+              >
+                <a
+                  href={WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                    WhatsApp Consultation
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  className="w-full bg-[#0088cc] text-white hover:bg-[#0088cc]/90"
+                  <WhatsAppIcon className="mr-2" />
+                  WhatsApp
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full"
+              >
+                <a
+                  href={TELEGRAM_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer">
-                    <TelegramIcon className="mr-2" />
-                    Telegram Consultation
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="w-full"
-                >
-                  <Link to="/programs">Browse All Programs</Link>
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-6 text-center">
-                No commitment required. 100% confidential.
-              </p>
+                  <TelegramIcon className="mr-2" />
+                  Telegram
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </a>
+              </Button>
             </div>
           </div>
         </div>

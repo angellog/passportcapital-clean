@@ -12,6 +12,9 @@ import Compare from "@/pages/Compare";
 import HowItWorks from "@/pages/HowItWorks";
 import Services from "@/pages/Services";
 import About from "@/pages/About";
+import WhoWeServe from "@/pages/WhoWeServe";
+import Partners from "@/pages/Partners";
+import Insights from "@/pages/Insights";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
@@ -44,6 +47,9 @@ function App() {
                 <Route path="/how-it-works" element={<HowItWorks />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/who-we-serve" element={<WhoWeServe />} />
+                <Route path="/partners" element={<Partners />} />
+                <Route path="/insights" element={<Insights />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/cookies" element={<CookiePolicy />} />

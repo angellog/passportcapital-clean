@@ -19,7 +19,7 @@ import { WHATSAPP_LINK } from '@/lib/constants';
 
 const stats = [
   { value: '10+', label: 'Years Experience' },
-  { value: '250+', label: 'Families Served' },
+  { value: '27+', label: 'Programs' },
   { value: '20+', label: 'Countries' },
   { value: '99%', label: 'Success Rate' },
 ];
@@ -70,7 +70,7 @@ const About = () => {
     <Layout>
       <SEOHead
         title="About Us — Trusted Investment Migration Advisors | Passport Capital"
-        description="10+ years helping 250+ families obtain second citizenship and residency. Learn about our mission, values, and expert team."
+        description="Access to 27+ government-approved citizenship and residency programs across 20+ countries. Learn about our mission, values, and expert team."
         path="/about"
       />
       <section className="pt-32 pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
@@ -111,8 +111,8 @@ const About = () => {
                     <Users className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-display text-2xl font-bold text-foreground">250+</p>
-                    <p className="text-sm text-muted-foreground">Happy Clients</p>
+                    <p className="font-display text-2xl font-bold text-foreground">27+</p>
+                    <p className="text-sm text-muted-foreground">Programs</p>
                   </div>
                 </div>
               </div>

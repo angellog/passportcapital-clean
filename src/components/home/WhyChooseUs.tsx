@@ -1,4 +1,6 @@
 import { Shield, Award, Users, CheckCircle2, Globe, Wallet, ArrowUpRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import navyLeatherTexture from '@/assets/navy-leather-texture.png';
 
 const features = [
@@ -41,7 +43,7 @@ const features = [
 ];
 
 const stats = [
-  { value: '250+', label: 'Families Served' },
+  { value: '27+', label: 'Programs' },
   { value: '10+', label: 'Years Experience' },
   { value: '24/7', label: 'Client Support' },
   { value: '$50M+', label: 'Investments Facilitated' },
@@ -128,6 +130,32 @@ const WhyChooseUs = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-16 rounded-2xl bg-navy p-10 md:p-14 text-center">
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
+            Why Not Just Go Direct?
+          </h3>
+          <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">
+            You've seen the big agencies. Passport Capital gives you the same program access — with a dedicated advisor, transparent fees, and zero factory-line processing.
+          </p>
+          <ul className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10 text-white/90">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-gold" />
+              <span>Dedicated advisor, not a ticket queue</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-gold" />
+              <span>Transparent fees, no hidden markup</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-gold" />
+              <span>Same programs, personalized guidance</span>
+            </li>
+          </ul>
+          <Button asChild size="lg" className="bg-gold text-navy hover:bg-gold-dark font-semibold">
+            <Link to="/programs">Explore Programs</Link>
+          </Button>
         </div>
       </div>
     </section>
