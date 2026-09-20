@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster as SonnerToaster } from "sonner";
-import { AuthProvider } from "@/hooks/useAuth";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "@/pages/Index";
 import Programs from "@/pages/Programs";
 import ProgramDetail from "@/pages/ProgramDetail";
@@ -21,11 +21,12 @@ import CookiePolicy from "@/pages/CookiePolicy";
 import ResetPassword from "@/pages/ResetPassword";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
-import AdminUsers from "@/pages/admin/AdminUsers";
-import AdminEnquiries from "@/pages/admin/AdminEnquiries";
 import AdminPrograms from "@/pages/admin/AdminPrograms";
-import AdminMedia from "@/pages/admin/AdminMedia";
-import ProtectedRoute from "@/components/admin/ProtectedRoute";
+import AdminEnquiries from "@/pages/admin/AdminEnquiries";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminNewsletter from "@/pages/admin/AdminNewsletter";
+import ConsultationDesk from "@/pages/admin/ConsultationDesk";
+import ProtectedRoute, { AdminRoute } from "@/components/admin/ProtectedRoute";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,11 +35,11 @@ function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <SonnerToaster richColors />
-            <BrowserRouter>
+        <TooltipProvider>
+          <Toaster />
+          <SonnerToaster richColors />
+          <BrowserRouter>
+            <AuthProvider>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/programs" element={<Programs />} />
@@ -56,15 +57,16 @@ function App() {
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-                <Route path="/admin/users" element={<ProtectedRoute requireAdmin><AdminUsers /></ProtectedRoute>} />
+                <Route path="/admin/programs" element={<AdminRoute><AdminPrograms /></AdminRoute>} />
                 <Route path="/admin/enquiries" element={<ProtectedRoute><AdminEnquiries /></ProtectedRoute>} />
-                <Route path="/admin/programs" element={<ProtectedRoute><AdminPrograms /></ProtectedRoute>} />
-                <Route path="/admin/media" element={<ProtectedRoute requireAdmin><AdminMedia /></ProtectedRoute>} />
+                <Route path="/admin/consultation-desk" element={<ProtectedRoute><ConsultationDesk /></ProtectedRoute>} />
+                <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+                <Route path="/admin/newsletter" element={<AdminRoute><AdminNewsletter /></AdminRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );

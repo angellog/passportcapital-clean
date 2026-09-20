@@ -7,64 +7,245 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.1"
-  }
   public: {
     Tables: {
-      contact_enquiries: {
+      programs: {
         Row: {
-          assigned_to: string | null
-          country_code: string
-          created_at: string
-          email: string
-          enquiry: string | null
-          first_name: string
           id: string
-          investment_budget: string
-          last_name: string
-          nationality: string
-          notes: string | null
-          phone: string
-          program_interest: string
-          residence: string
-          status: Database["public"]["Enums"]["enquiry_status"]
+          created_at: string
+          updated_at: string
+          country: string
+          flag_emoji: string | null
+          region: string
+          program_type: string
+          program_name: string
+          slug: string
+          tagline: string | null
+          description: string | null
+          highlights: string[] | null
+          min_investment: number
+          max_investment: number | null
+          advisory_fee_min: number | null
+          advisory_fee_max: number | null
+          processing_time: string | null
+          visa_free_countries: number | null
+          success_rate: string | null
+          investment_options: Json | null
+          min_age: number | null
+          criminal_record_allowed: boolean
+          net_worth_required: string | null
+          source_of_funds_required: boolean
+          eligible_nationalities: string[] | null
+          excluded_nationalities: string[] | null
+          required_documents: string[] | null
+          due_diligence_stages: string[] | null
+          family_included: boolean
+          spouse_included: boolean
+          children_age_limit: number | null
+          parents_included: boolean
+          siblings_included: boolean
+          family_notes: string | null
+          benefits: string[] | null
+          travel_access_highlights: string[] | null
+          crypto_accepted: boolean
+          crypto_notes: string | null
+          consultant_pitch: string | null
+          ideal_client_profile: string | null
+          key_talking_points: string[] | null
+          objections: Json | null
+          competitor_comparison: string | null
+          red_flags: string[] | null
+          closing_tips: string | null
+          is_active: boolean
+          is_featured: boolean
+          sort_order: number
         }
         Insert: {
-          assigned_to?: string | null
-          country_code?: string
-          created_at?: string
-          email: string
-          enquiry?: string | null
-          first_name: string
           id?: string
-          investment_budget: string
-          last_name: string
-          nationality: string
-          notes?: string | null
-          phone: string
-          program_interest: string
-          residence: string
-          status?: Database["public"]["Enums"]["enquiry_status"]
+          created_at?: string
+          updated_at?: string
+          country: string
+          flag_emoji?: string | null
+          region: string
+          program_type: string
+          program_name: string
+          slug: string
+          tagline?: string | null
+          description?: string | null
+          highlights?: string[] | null
+          min_investment: number
+          max_investment?: number | null
+          advisory_fee_min?: number | null
+          advisory_fee_max?: number | null
+          processing_time?: string | null
+          visa_free_countries?: number | null
+          success_rate?: string | null
+          investment_options?: Json | null
+          min_age?: number
+          criminal_record_allowed?: boolean
+          net_worth_required?: string | null
+          source_of_funds_required?: boolean
+          eligible_nationalities?: string[] | null
+          excluded_nationalities?: string[] | null
+          required_documents?: string[] | null
+          due_diligence_stages?: string[] | null
+          family_included?: boolean
+          spouse_included?: boolean
+          children_age_limit?: number | null
+          parents_included?: boolean
+          siblings_included?: boolean
+          family_notes?: string | null
+          benefits?: string[] | null
+          travel_access_highlights?: string[] | null
+          crypto_accepted?: boolean
+          crypto_notes?: string | null
+          consultant_pitch?: string | null
+          ideal_client_profile?: string | null
+          key_talking_points?: string[] | null
+          objections?: Json | null
+          competitor_comparison?: string | null
+          red_flags?: string[] | null
+          closing_tips?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          sort_order?: number
         }
         Update: {
+          id?: string
+          created_at?: string
+          updated_at?: string
+          country?: string
+          flag_emoji?: string | null
+          region?: string
+          program_type?: string
+          program_name?: string
+          slug?: string
+          tagline?: string | null
+          description?: string | null
+          highlights?: string[] | null
+          min_investment?: number
+          max_investment?: number | null
+          advisory_fee_min?: number | null
+          advisory_fee_max?: number | null
+          processing_time?: string | null
+          visa_free_countries?: number | null
+          success_rate?: string | null
+          investment_options?: Json | null
+          min_age?: number
+          criminal_record_allowed?: boolean
+          net_worth_required?: string | null
+          source_of_funds_required?: boolean
+          eligible_nationalities?: string[] | null
+          excluded_nationalities?: string[] | null
+          required_documents?: string[] | null
+          due_diligence_stages?: string[] | null
+          family_included?: boolean
+          spouse_included?: boolean
+          children_age_limit?: number | null
+          parents_included?: boolean
+          siblings_included?: boolean
+          family_notes?: string | null
+          benefits?: string[] | null
+          travel_access_highlights?: string[] | null
+          crypto_accepted?: boolean
+          crypto_notes?: string | null
+          consultant_pitch?: string | null
+          ideal_client_profile?: string | null
+          key_talking_points?: string[] | null
+          objections?: Json | null
+          competitor_comparison?: string | null
+          red_flags?: string[] | null
+          closing_tips?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      enquiries: {
+        Row: {
+          id: string
+          created_at: string
+          full_name: string
+          email: string | null
+          whatsapp: string | null
+          country_of_residence: string | null
+          nationality: string | null
+          program_interest: string | null
+          budget_range: string | null
+          timeline: string | null
+          programs_of_interest: string[] | null
+          source: string | null
+          referral_partner: string | null
+          notes: string | null
+          status: string
+          assigned_to: string | null
+          last_contacted_at: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          full_name: string
+          email?: string | null
+          whatsapp?: string | null
+          country_of_residence?: string | null
+          nationality?: string | null
+          program_interest?: string | null
+          budget_range?: string | null
+          timeline?: string | null
+          programs_of_interest?: string[] | null
+          source?: string | null
+          referral_partner?: string | null
+          notes?: string | null
+          status?: string
           assigned_to?: string | null
-          country_code?: string
+          last_contacted_at?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          full_name?: string
+          email?: string | null
+          whatsapp?: string | null
+          country_of_residence?: string | null
+          nationality?: string | null
+          program_interest?: string | null
+          budget_range?: string | null
+          timeline?: string | null
+          programs_of_interest?: string[] | null
+          source?: string | null
+          referral_partner?: string | null
+          notes?: string | null
+          status?: string
+          assigned_to?: string | null
+          last_contacted_at?: string | null
+        }
+        Relationships: []
+      }
+      admin_users: {
+        Row: {
+          id: string
+          created_at: string
+          email: string
+          name: string | null
+          role: string
+          is_active: boolean
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          email: string
+          name?: string | null
+          role?: string
+          is_active?: boolean
+        }
+        Update: {
+          id?: string
           created_at?: string
           email?: string
-          enquiry?: string | null
-          first_name?: string
-          id?: string
-          investment_budget?: string
-          last_name?: string
-          nationality?: string
-          notes?: string | null
-          phone?: string
-          program_interest?: string
-          residence?: string
-          status?: Database["public"]["Enums"]["enquiry_status"]
+          name?: string | null
+          role?: string
+          is_active?: boolean
         }
         Relationships: []
       }
@@ -86,185 +267,15 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string
-          full_name: string | null
-          id: string
-          updated_at: string
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string
-          full_name?: string | null
-          id: string
-          updated_at?: string
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string
-          full_name?: string | null
-          id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      programs: {
-        Row: {
-          about_country: string | null
-          coming_soon: boolean
-          cost_breakdown: Json | null
-          country: string
-          created_at: string
-          currency: string | null
-          description: string
-          dual_citizenship: boolean
-          eligibility: Json | null
-          family_inclusion: boolean
-          faqs: Json | null
-          flag: string
-          highlights: Json
-          id: string
-          image: string
-          investment_type: string
-          is_crypto_friendly: boolean
-          is_new: boolean
-          is_popular: boolean
-          key_benefits: Json | null
-          language: string | null
-          legal_framework: string | null
-          min_investment: number
-          passport_validity: string | null
-          physical_presence: string
-          population: string | null
-          processing_time: string
-          program_type: string
-          region: string
-          required_documents: Json | null
-          tagline: string | null
-          timeline: Json | null
-          timezone: string | null
-          updated_at: string
-          visa_free_by_region: Json | null
-          visa_free_countries: number
-        }
-        Insert: {
-          about_country?: string | null
-          coming_soon?: boolean
-          cost_breakdown?: Json | null
-          country: string
-          created_at?: string
-          currency?: string | null
-          description: string
-          dual_citizenship?: boolean
-          eligibility?: Json | null
-          family_inclusion?: boolean
-          faqs?: Json | null
-          flag: string
-          highlights?: Json
-          id: string
-          image: string
-          investment_type: string
-          is_crypto_friendly?: boolean
-          is_new?: boolean
-          is_popular?: boolean
-          key_benefits?: Json | null
-          language?: string | null
-          legal_framework?: string | null
-          min_investment: number
-          passport_validity?: string | null
-          physical_presence: string
-          population?: string | null
-          processing_time: string
-          program_type: string
-          region: string
-          required_documents?: Json | null
-          tagline?: string | null
-          timeline?: Json | null
-          timezone?: string | null
-          updated_at?: string
-          visa_free_by_region?: Json | null
-          visa_free_countries: number
-        }
-        Update: {
-          about_country?: string | null
-          coming_soon?: boolean
-          cost_breakdown?: Json | null
-          country?: string
-          created_at?: string
-          currency?: string | null
-          description?: string
-          dual_citizenship?: boolean
-          eligibility?: Json | null
-          family_inclusion?: boolean
-          faqs?: Json | null
-          flag?: string
-          highlights?: Json
-          id?: string
-          image?: string
-          investment_type?: string
-          is_crypto_friendly?: boolean
-          is_new?: boolean
-          is_popular?: boolean
-          key_benefits?: Json | null
-          language?: string | null
-          legal_framework?: string | null
-          min_investment?: number
-          passport_validity?: string | null
-          physical_presence?: string
-          population?: string | null
-          processing_time?: string
-          program_type?: string
-          region?: string
-          required_documents?: Json | null
-          tagline?: string | null
-          timeline?: Json | null
-          timezone?: string | null
-          updated_at?: string
-          visa_free_by_region?: Json | null
-          visa_free_countries?: number
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      is_admin_or_moderator: { Args: { _user_id: string }; Returns: boolean }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
-      enquiry_status: "new" | "contacted" | "in_progress" | "closed"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -318,8 +329,8 @@ export type TablesInsert<
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
+        Insert: infer I
+      }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
@@ -343,8 +354,8 @@ export type TablesUpdate<
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
+        Update: infer U
+      }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
@@ -354,46 +365,3 @@ export type TablesUpdate<
       ? U
       : never
     : never
-
-export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
-
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
-
-export const Constants = {
-  public: {
-    Enums: {
-      app_role: ["admin", "moderator", "user"],
-      enquiry_status: ["new", "contacted", "in_progress", "closed"],
-    },
-  },
-} as const

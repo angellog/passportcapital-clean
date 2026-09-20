@@ -17,7 +17,7 @@ const ResetPassword = () => {
     setLoading(true);
     const { error } = await updatePassword(password);
     if (error) {
-      toast.error('Error', { description: error.message });
+      toast.error('Error', { description: error });
     } else {
       toast.success('Password updated', { description: 'You can now sign in with your new password.' });
       navigate('/admin/login');

@@ -1,119 +1,87 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import { Shield } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [fullName, setFullName] = useState('');
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { signIn, signUp, resetPassword, user, isAdmin, isModerator } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const { signIn, session, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && (isAdmin || isModerator)) {
+    if (!loading && session) {
       navigate('/admin', { replace: true });
     }
-  }, [user, isAdmin, isModerator, navigate]);
+  }, [session, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setError(null);
+    setSubmitting(true);
 
-    if (forgotPassword) {
-      const { error } = await resetPassword(email);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Password reset link sent. Check your email.');
-        setForgotPassword(false);
-      }
-      setLoading(false);
-      return;
+    const { error: signInError } = await signIn(email, password);
+    if (signInError) {
+      setError(signInError);
+      setSubmitting(false);
     }
-
-    if (isSignUp) {
-      const { error } = await signUp(email, password, fullName);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Account created. Check your email to confirm, then sign in.');
-        setIsSignUp(false);
-      }
-    } else {
-      const { error } = await signIn(email, password);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        navigate('/admin');
-      }
-    }
-    setLoading(false);
   };
 
+  if (loading) return null;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-royal-dark p-4">
-      <div className="w-full max-w-md bg-card rounded-xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
-            <Shield className="h-7 w-7 text-primary" />
+    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4">
+      <Card className="w-full max-w-md border-gray-700 bg-gray-800 text-gray-100">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20">
+            <Shield className="h-6 w-6 text-amber-400" />
           </div>
-          <h1 className="text-2xl font-display font-bold text-foreground">
-            {forgotPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Admin Login'}
-          </h1>
-          <p className="text-muted-foreground text-sm mt-1">Passport Capital Dashboard</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {isSignUp && (
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input id="fullName" value={fullName} onChange={e => setFullName(e.target.value)} required />
+          <CardTitle className="text-2xl text-gray-50">Passport Capital</CardTitle>
+          <CardDescription className="text-gray-400">Sign in to your account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-gray-300">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@passportcapital.com"
+                required
+                className="border-gray-600 bg-gray-700 text-gray-100 placeholder:text-gray-500"
+              />
             </div>
-          )}
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-          </div>
-          {!forgotPassword && (
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} />
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-gray-300">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="border-gray-600 bg-gray-700 text-gray-100 placeholder:text-gray-500"
+              />
             </div>
-          )}
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Please wait...' : forgotPassword ? 'Send Reset Link' : isSignUp ? 'Sign Up' : 'Sign In'}
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center space-y-2">
-          {!forgotPassword && (
-            <button onClick={() => setForgotPassword(true)} className="text-sm text-muted-foreground hover:text-primary">
-              Forgot password?
-            </button>
-          )}
-          <div>
-            <button
-              onClick={() => { setIsSignUp(!isSignUp); setForgotPassword(false); }}
-              className="text-sm text-muted-foreground hover:text-primary"
+            {error && <p className="text-sm text-red-400">{error}</p>}
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="w-full bg-amber-500 text-gray-900 hover:bg-amber-400"
             >
-              {isSignUp ? 'Already have an account? Sign in' : 'Need an account? Sign up'}
-            </button>
-          </div>
-          {forgotPassword && (
-            <button onClick={() => setForgotPassword(false)} className="text-sm text-muted-foreground hover:text-primary">
-              Back to sign in
-            </button>
-          )}
-        </div>
-      </div>
+              {submitting ? 'Signing in...' : 'Sign In'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

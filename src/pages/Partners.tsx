@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { CONSULTATION_FEE, WHATSAPP_LINK } from '@/lib/constants';
+import { WHATSAPP_LINK } from '@/lib/constants';
 
 const partnerTypes = [
   {

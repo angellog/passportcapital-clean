@@ -1,60 +1,75 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import type { User, Session } from '@supabase/supabase-js';
+
+export type UserRole = 'admin' | 'consultant';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  role: UserRole | null;
   isAdmin: boolean;
-  isModerator: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
+  isConsultant: boolean;
+  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: Error | null }>;
-  updatePassword: (password: string) => Promise<{ error: Error | null }>;
+  updatePassword: (password: string) => Promise<{ error: string | null }>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  session: null,
+  loading: true,
+  role: null,
+  isAdmin: false,
+  isConsultant: false,
+  signIn: async () => ({ error: null }),
+  signOut: async () => {},
+  updatePassword: async () => ({ error: null }),
+  resetPassword: async () => ({ error: null }),
+});
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+async function fetchUserRole(email: string): Promise<UserRole | null> {
+  const { data } = await supabase
+    .from('admin_users')
+    .select('role, is_active')
+    .eq('email', email)
+    .eq('is_active', true)
+    .single();
+
+  if (!data) return null;
+  if (data.role === 'admin' || data.role === 'consultant') return data.role;
+  return null;
+}
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isModerator, setIsModerator] = useState(false);
-
-  const checkRoles = async (userId: string) => {
-    const { data } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId);
-
-    const roles = data?.map(r => r.role) || [];
-    setIsAdmin(roles.includes('admin'));
-    setIsModerator(roles.includes('moderator'));
-  };
+  const [role, setRole] = useState<UserRole | null>(null);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          setTimeout(() => checkRoles(session.user.id), 0);
-        } else {
-          setIsAdmin(false);
-          setIsModerator(false);
-        }
-        setLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) {
-        checkRoles(session.user.id);
+      if (session?.user?.email) {
+        const userRole = await fetchUserRole(session.user.email);
+        setRole(userRole);
+      }
+      setLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user?.email) {
+        const userRole = await fetchUserRole(session.user.email);
+        setRole(userRole);
+      } else {
+        setRole(null);
       }
       setLoading(false);
     });
@@ -63,47 +78,58 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error as Error | null };
-  };
-
-  const signUp = async (email: string, password: string, fullName: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: {
-        data: { full_name: fullName },
-        emailRedirectTo: window.location.origin,
-      },
     });
-    return { error: error as Error | null };
+    if (!error) {
+      const userRole = await fetchUserRole(email);
+      setRole(userRole);
+      if (!userRole) {
+        await supabase.auth.signOut();
+        return {
+          error: 'Access denied. You are not registered as an admin or consultant.',
+        };
+      }
+    }
+    return { error: error?.message ?? null };
   };
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    setRole(null);
+  };
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({ password });
+    return { error: error?.message ?? null };
   };
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
-    return { error: error as Error | null };
-  };
-
-  const updatePassword = async (password: string) => {
-    const { error } = await supabase.auth.updateUser({ password });
-    return { error: error as Error | null };
+    return { error: error?.message ?? null };
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, isAdmin, isModerator, signIn, signUp, signOut, resetPassword, updatePassword }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        loading,
+        role,
+        isAdmin: role === 'admin',
+        isConsultant: role === 'consultant',
+        signIn,
+        signOut,
+        updatePassword,
+        resetPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

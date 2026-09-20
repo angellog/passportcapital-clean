@@ -24,19 +24,18 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { programs } from '@/data/programs';
-import { countries, countryCodes, investmentBudgets } from '@/data/countries';
+import { countries, investmentBudgets } from '@/data/countries';
 
 const contactSchema = z.object({
-  firstName: z.string().trim().min(1, 'First name is required').max(50, 'First name must be less than 50 characters'),
-  lastName: z.string().trim().min(1, 'Last name is required').max(50, 'Last name must be less than 50 characters'),
+  fullName: z.string().trim().min(1, 'Full name is required').max(100, 'Full name must be less than 100 characters'),
   email: z.string().trim().email('Please enter a valid email address').max(255, 'Email must be less than 255 characters'),
-  countryCode: z.string().min(1, 'Country code is required'),
-  phone: z.string().trim().min(5, 'Phone number is required').max(20, 'Phone number must be less than 20 characters'),
-  investmentBudget: z.string().min(1, 'Please select your investment budget'),
+  whatsapp: z.string().trim().min(5, 'WhatsApp number is required').max(20, 'WhatsApp number must be less than 20 characters'),
+  budgetRange: z.string().min(1, 'Please select your investment budget'),
   programInterest: z.string().min(1, 'Please select a program'),
   nationality: z.string().min(1, 'Please select your nationality'),
-  residence: z.string().min(1, 'Please select your country of residence'),
-  enquiry: z.string().max(1000, 'Enquiry must be less than 1000 characters').optional(),
+  countryOfResidence: z.string().min(1, 'Please select your country of residence'),
+  timeline: z.string().min(1, 'Please select your timeline'),
+  notes: z.string().max(1000, 'Notes must be less than 1000 characters').optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -47,33 +46,33 @@ const ContactForm = () => {
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      fullName: '',
       email: '',
-      countryCode: '+1',
-      phone: '',
-      investmentBudget: '',
+      whatsapp: '',
+      budgetRange: '',
       programInterest: '',
       nationality: '',
-      residence: '',
-      enquiry: '',
+      countryOfResidence: '',
+      timeline: '',
+      notes: '',
     },
   });
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
 
-    const { error } = await supabase.from('contact_enquiries').insert({
-      first_name: data.firstName,
-      last_name: data.lastName,
+    const { error } = await supabase.from('enquiries').insert({
+      full_name: data.fullName,
       email: data.email,
-      country_code: data.countryCode,
-      phone: data.phone,
-      investment_budget: data.investmentBudget,
+      whatsapp: data.whatsapp,
+      budget_range: data.budgetRange,
       program_interest: data.programInterest,
       nationality: data.nationality,
-      residence: data.residence,
-      enquiry: data.enquiry || null,
+      country_of_residence: data.countryOfResidence,
+      timeline: data.timeline,
+      notes: data.notes || null,
+      status: 'new',
+      source: 'website',
     });
 
     if (error) {
@@ -111,13 +110,13 @@ const ContactForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <FormField
                 control={form.control}
-                name="firstName"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white/80 text-sm">First Name *</FormLabel>
+                    <FormLabel className="text-white/80 text-sm">Full Name *</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="John"
+                        placeholder="John Smith"
                         className="bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-gold-400 focus:ring-gold-400/20"
                         {...field}
                       />
@@ -129,25 +128,7 @@ const ContactForm = () => {
 
               <FormField
                 control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white/80 text-sm">Last Name *</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Smith"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-gold-400 focus:ring-gold-400/20"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="investmentBudget"
+                name="budgetRange"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white/80 text-sm">Investment Budget *</FormLabel>
@@ -208,6 +189,31 @@ const ContactForm = () => {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="timeline"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-white/80 text-sm">Timeline *</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="bg-white/10 border-white/20 text-white focus:border-gold-400 focus:ring-gold-400/20 [&>span]:text-white/40 [&[data-state=open]>span]:text-white data-[placeholder]:text-white/40">
+                          <SelectValue placeholder="Select timeline" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="bg-navy border-white/20">
+                        <SelectItem value="asap" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">As soon as possible</SelectItem>
+                        <SelectItem value="1-3months" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">1-3 months</SelectItem>
+                        <SelectItem value="3-6months" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">3-6 months</SelectItem>
+                        <SelectItem value="6-12months" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">6-12 months</SelectItem>
+                        <SelectItem value="exploring" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">Just exploring</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -232,43 +238,17 @@ const ContactForm = () => {
 
               <FormField
                 control={form.control}
-                name="phone"
+                name="whatsapp"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white/80 text-sm">Phone Number *</FormLabel>
-                    <div className="flex gap-2">
-                      <FormField
-                        control={form.control}
-                        name="countryCode"
-                        render={({ field: codeField }) => (
-                          <Select onValueChange={codeField.onChange} defaultValue={codeField.value}>
-                            <FormControl>
-                              <SelectTrigger className="w-24 bg-white/10 border-white/20 text-white focus:border-gold-400 focus:ring-gold-400/20">
-                                <SelectValue />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent className="bg-navy border-white/20 max-h-[300px]">
-                              {countryCodes.map((cc) => (
-                                <SelectItem
-                                  key={cc.code}
-                                  value={cc.code}
-                                  className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white"
-                                >
-                                  {cc.code} {cc.country}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
+                    <FormLabel className="text-white/80 text-sm">WhatsApp Number *</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="+1 234 567 8900"
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-gold-400 focus:ring-gold-400/20"
+                        {...field}
                       />
-                      <FormControl>
-                        <Input
-                          placeholder="123 456 7890"
-                          className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-gold-400 focus:ring-gold-400/20"
-                          {...field}
-                        />
-                      </FormControl>
-                    </div>
+                    </FormControl>
                     <FormMessage className="text-red-400" />
                   </FormItem>
                 )}
@@ -305,7 +285,7 @@ const ContactForm = () => {
 
               <FormField
                 control={form.control}
-                name="residence"
+                name="countryOfResidence"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white/80 text-sm">Country of Residence *</FormLabel>
@@ -336,7 +316,7 @@ const ContactForm = () => {
             <div className="mb-8">
               <FormField
                 control={form.control}
-                name="enquiry"
+                name="notes"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white/80 text-sm">Your Enquiry (Optional)</FormLabel>
